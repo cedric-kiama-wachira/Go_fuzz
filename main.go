@@ -4,7 +4,7 @@
 // 3. Included main function to initialize a string, reverse it, print the output, and repeat. 
 // 4. The main function uses the fmt package, so I will need to import it.
 // 5. Replacing the Reverse function so that we can traverse the string by runes, instead of by bytes.
-
+// 6. Replaced the Reverse function from above step so that I can understand what is going wrong when converting the string to a slice of runes.
 
 // Step 1.
 package main
@@ -33,11 +33,22 @@ func main() {
 //}
 
 // Step 5.
+//func Reverse(s string) string {
+//    r := []rune(s)
+//    for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
+//        r[i], r[j] = r[j], r[i]
+//    }
+//    return string(r)
+//}
+
+// Step 6.
 func Reverse(s string) string {
+    fmt.Printf("input: %q\n", s)
     r := []rune(s)
+    fmt.Printf("runes: %q\n", r)
     for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
         r[i], r[j] = r[j], r[i]
     }
     return string(r)
-}	
+}
 
