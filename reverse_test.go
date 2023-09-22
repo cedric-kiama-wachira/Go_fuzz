@@ -5,7 +5,7 @@
 // 4. Commented out the function in step 3 and added the fuzz test
 // 5. Imported the unicode/utf8
 // 6. Replaced the fuzz target
-// 7. 
+// 7. Updated the entire function in step 4 above.
 
 
 // Step 1.
@@ -35,11 +35,11 @@ import (
 //}
 
 // Step 4.
-func FuzzReverse(f *testing.F) {
-    testcases := []string{"Hello, world", " ", "!12345"}
-    for _, tc := range testcases {
-        f.Add(tc)  // Use f.Add to provide a seed corpus
-    }
+//func FuzzReverse(f *testing.F) {
+//    testcases := []string{"Hello, world", " ", "!12345"}
+//    for _, tc := range testcases {
+//        f.Add(tc)  // Use f.Add to provide a seed corpus
+//    }
  //   f.Fuzz(func(t *testing.T, orig string) {
 //        rev := Reverse(orig)
 //        doubleRev := Reverse(rev)
@@ -51,15 +51,39 @@ func FuzzReverse(f *testing.F) {
 //        }
 //    })
 // Step 6.
-f.Fuzz(func(t *testing.T, orig string) {
-    rev := Reverse(orig)
-    doubleRev := Reverse(rev)
-    t.Logf("Number of runes: orig=%d, rev=%d, doubleRev=%d", utf8.RuneCountInString(orig), utf8.RuneCountInString(rev), utf8.RuneCountInString(doubleRev))
-    if orig != doubleRev {
-        t.Errorf("Before: %q, after: %q", orig, doubleRev)
+//f.Fuzz(func(t *testing.T, orig string) {
+//    rev := Reverse(orig)
+//    doubleRev := Reverse(rev)
+//    t.Logf("Number of runes: orig=%d, rev=%d, doubleRev=%d", utf8.RuneCountInString(orig), utf8.RuneCountInString(rev), utf8.RuneCountInString(doubleRev))
+//    if orig != doubleRev {
+//        t.Errorf("Before: %q, after: %q", orig, doubleRev)
+//    }
+//    if utf8.ValidString(orig) && !utf8.ValidString(rev) {
+//        t.Errorf("Reverse produced invalid UTF-8 string %q", rev)
+//    }
+//})
+//}
+
+// Step 7
+func FuzzReverse(f *testing.F) {
+    testcases := []string {"Hello, world", " ", "!12345"}
+    for _, tc := range testcases {
+        f.Add(tc)  // Use f.Add to provide a seed corpus
     }
-    if utf8.ValidString(orig) && !utf8.ValidString(rev) {
-        t.Errorf("Reverse produced invalid UTF-8 string %q", rev)
-    }
-})
+    f.Fuzz(func(t *testing.T, orig string) {
+        rev, err1 := Reverse(orig)
+        if err1 != nil {
+            return
+        }
+        doubleRev, err2 := Reverse(rev)
+        if err2 != nil {
+             return
+        }
+        if orig != doubleRev {
+            t.Errorf("Before: %q, after: %q", orig, doubleRev)
+        }
+        if utf8.ValidString(orig) && !utf8.ValidString(rev) {
+            t.Errorf("Reverse produced invalid UTF-8 string %q", rev)
+        }
+    })
 }
