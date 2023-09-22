@@ -3,7 +3,7 @@
 // 2. Imported the library for use
 // 3. Wrote the static unit test function
 // 4. Commented out the function in step 3 and added the fuzz test
-// 5.
+// 5. Imported the unicode/utf8
 // 6.
 
 // Step 1.
@@ -12,6 +12,7 @@ package main
 // Step 2.
 import (
     "testing"
+    "unicode/utf8" // Step 5
 )
 
 // Step 3.
